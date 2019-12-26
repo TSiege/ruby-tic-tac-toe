@@ -46,4 +46,18 @@ describe Board do
         board.board = [["O", " ", " "], [" ", "O", " "], [" ", " ", "O"]]
         expect(board.has_winner?).to equal true
     end
+
+    it "can find the winner" do
+        board = described_class.new
+        board.board = [[" ", "X", "O"], ["O", "X", "X"], ["X", "O", "O"]]
+        expect(board.find_winner).to equal nil
+        board.take_space(0, 0, "X")
+        expect(board.find_winner).to equal nil
+        board.board = [["X", "X", "X"], [" ", " ", " "], [" ", " ", " "]]
+        expect(board.find_winner).to eql "X"
+        board.board = [["O", " ", " "], ["O", " ", " "], ["O", " ", " "]]
+        expect(board.find_winner).to eql "O"
+        board.board = [["O", " ", " "], [" ", "O", " "], [" ", " ", "O"]]
+        expect(board.find_winner).to eql "O"
+    end
 end

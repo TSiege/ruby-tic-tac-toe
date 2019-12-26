@@ -8,6 +8,15 @@ TILE_TO_POSITION = {
     C1: [0, 2],
     C2: [1, 2],
     C3: [2, 2],
+    "1A": [0, 0],
+    "2A": [1, 0],
+    "3A": [2, 0],
+    "1B": [0, 1],
+    "2B": [1, 1],
+    "3B": [2, 1],
+    "1C": [0, 2],
+    "2C": [1, 2],
+    "3C": [2, 2],
 }
 
 class Board
@@ -45,22 +54,31 @@ class Board
     end
 
     def has_winner?
+        !!find_winner
+    end
+
+    def find_winner
         # horizontal winners
         board.each do |row|
-            return true if row.all? { |x| x == "X" } || row.all? { |x| x == "O" }
+            return row.first if find_winner_for_row row
         end
         # vertical winners
         [0, 1, 2].each do |col|
             row = [board[0][col], board[1][col], board[2][col]]
-            return true if row.all? { |x| x == "X" } || row.all? { |x| x == "O" }
+            return row.first if find_winner_for_row row
         end
         # diagonal winners
         backward_diag = [board[0][0], board[1][1], board[2][2]]
         forward_diag = [board[0][2], board[1][1], board[2][0]]
-        return true if backward_diag.all? { |x| x == "X" } || backward_diag.all? { |x| x == "O" }
-        return true if forward_diag.all? { |x| x == "X" } || forward_diag.all? { |x| x == "O" }
+        return backward_diag.first if find_winner_for_row backward_diag
+        return backward_diag.first if find_winner_for_row forward_diag
 
-        return false
+        return nil
+    end
+
+    private def find_winner_for_row(row)
+        return row.first if row.uniq.length == 1 && row.none?(" ")
+        return nil
     end
 
 end
