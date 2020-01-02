@@ -98,7 +98,7 @@ class CLI
         puts "y/n"
         y_or_n_prompt_for_new_game
       else
-        puts "COMPUTER TURN"
+        Computer.take_turn(board)
         user_turn
       end
     end
